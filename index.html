@@ -99,6 +99,14 @@
     const savedIP = localStorage.getItem(IP_KEY) || '';
     document.getElementById('mac-ip').value = savedIP;
 
+    // Mac側から ?cleared=1 で戻ってきた場合、localStorageをクリア
+    if (new URLSearchParams(location.search).get('cleared') === '1') {
+      localStorage.removeItem(STORAGE_KEY);
+      history.replaceState(null, '', '/');
+      document.getElementById('send-msg').innerHTML = '<div class="msg ok">✅ 送信完了！未送信リストをクリアしました。</div>';
+      setTimeout(() => { document.getElementById('send-msg').innerHTML = ''; }, 4000);
+    }
+
     function getPending() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     }
