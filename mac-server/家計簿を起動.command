@@ -12,9 +12,12 @@ pkill -f "uvicorn api:app" 2>/dev/null
 pkill -f "streamlit run app.py" 2>/dev/null
 sleep 1
 
+# conda household 環境のバイナリパスを使用（Python 3.13.5）
+CONDA_ENV="/Users/okanotatsuya/opt/anaconda3/envs/household"
+
 # FastAPI サーバー起動（バックグラウンド）
 echo "📡 APIサーバー起動中 (port 8000)..."
-uvicorn api:app --host 0.0.0.0 --port 8000 > /tmp/api.log 2>&1 &
+"$CONDA_ENV/bin/uvicorn" api:app --host 0.0.0.0 --port 8000 > /tmp/api.log 2>&1 &
 
 # Streamlit 起動
 echo "📊 Streamlit起動中 (port 8501)..."
@@ -26,7 +29,7 @@ echo "終了するにはこのウィンドウを閉じてください。"
 echo "=============================="
 
 # Streamlit をバックグラウンドで起動
-streamlit run app.py --server.headless true &
+"$CONDA_ENV/bin/streamlit" run app.py --server.headless true &
 
 # 起動を待ってからブラウザを開く
 sleep 3
